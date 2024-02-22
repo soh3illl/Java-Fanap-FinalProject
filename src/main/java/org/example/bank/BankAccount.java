@@ -2,6 +2,7 @@ package org.example.bank;
 
 import org.example.core.Validation;
 import org.example.core.exception.InsufficientFundsException;
+import org.example.core.exception.InvalidTransactionException;
 
 public class BankAccount {
     private String accountNumber;
@@ -36,6 +37,14 @@ public class BankAccount {
         this.accountHolderName = accountHolderName;
     }
 
+    public double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
+
     public void deposit(double amount) {
         if (Validation.isNegative(amount)) {
             throw new IllegalArgumentException("Provide a positive amount");
@@ -44,9 +53,10 @@ public class BankAccount {
         this.balance += amount;
     }
 
-    public void withdraw(double amount) {
-        if (Validation.min(this.balance, amount) || Validation.isNegative(amount)) {
-            throw new InsufficientFundsException();
+    public void withdraw(double amount) throws InvalidTransactionException {
+        if (Validation.isMoreThanBalance(this.balance, amount) || Validation.isNegative(amount)) {
+            throw new InsufficientFundsException("This amount could not be withdrawn");
         }
+        this.balance-=amount;
     }
 }
