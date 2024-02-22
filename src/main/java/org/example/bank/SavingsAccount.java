@@ -5,8 +5,8 @@ import org.example.core.exception.InsufficientFundsException;
 import org.example.core.exception.InvalidTransactionException;
 
 public class SavingsAccount extends BankAccount{
-    private double interestRate;
-    private double minimumBalance;
+    private double interestRate = 0.2;
+    private double minimumBalance = 10000;
 
     public SavingsAccount(String accountNumber, String accountHolderName) {
         super(accountNumber, accountHolderName);
