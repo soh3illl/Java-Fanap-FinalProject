@@ -26,7 +26,8 @@ public class CheckingAccount extends BankAccount{
 
     @Override
     public void withdraw(double amount) throws InvalidTransactionException {
-        if (Validation.isHigherThanOverdraftLimit(amount , this.getBalance() , this.overdraftLimit)){
+        double withdrawalAmount = amount + calculateFees(amount);
+        if (Validation.isHigherThanOverdraftLimit(withdrawalAmount , this.getBalance() , this.overdraftLimit)){
             throw new InsufficientFundsException("This amount could not be withdrawn because it is more than overdraftLimit");
         }
         if (Validation.isNegative(amount)){
@@ -37,10 +38,13 @@ public class CheckingAccount extends BankAccount{
     }
 
     public void deductFees(double amount){
-        TransferAmountPerRange transferAmountPerRange = getAmountRange(amount);
-        this.setBalance(this.getBalance()-transferAmountPerRange.value);
+        double feesAmount = calculateFees(amount);
+        this.setBalance(this.getBalance()-feesAmount);
     }
-
+    public static double calculateFees(double amount){
+        TransferAmountPerRange transferAmountPerRange = getAmountRange(amount);
+        return transferAmountPerRange.value;
+    }
     public static TransferAmountPerRange getAmountRange(double amount){
         if (amount < 1000000.0) {
             return TransferAmountPerRange.lessThan1Million;
