@@ -1,10 +1,9 @@
 package org.example.bank;
 
-import org.example.core.Validation;
 import org.example.core.exception.InsufficientFundsException;
 import org.example.core.exception.InvalidTransactionException;
 
-public class CheckingAccount extends BankAccount{
+public class CheckingAccount extends BankAccount {
     private Double overdraftLimit;
 
     public CheckingAccount(String accountNumber, String accountHolderName) {
@@ -26,70 +25,50 @@ public class CheckingAccount extends BankAccount{
 
     @Override
     public void withdraw(double amount) throws InvalidTransactionException {
-        double withdrawalAmount = amount + calculateFees(amount);
-        if (Validation.isHigherThanOverdraftLimit(withdrawalAmount , this.getBalance() , this.overdraftLimit)){
-            throw new InsufficientFundsException("This amount could not be withdrawn because it is more than overdraftLimit");
-        }
-        if (Validation.isNegative(amount)){
+        double fee = calculateFees(amount);
+        double withdrawalAmount = amount + fee;
+
+        if (amount <= 0) {
             throw new InsufficientFundsException("The entered amount is negative");
         }
+
+        if (this.getBalance() + this.getOverdraftLimit() < withdrawalAmount) {
+            throw new InsufficientFundsException("This amount could not be withdrawn because it is more than overdraftLimit");
+        }
+
         this.setBalance(this.getBalance() - amount);
-        deductFees(amount);
+        deductFees(fee);
     }
 
-    public void deductFees(double amount){
-        double feesAmount = calculateFees(amount);
-        this.setBalance(this.getBalance()-feesAmount);
+    public void deductFees(double fee) {
+        this.setBalance(this.getBalance() - fee);
     }
-    public static double calculateFees(double amount){
-        TransferAmountPerRange transferAmountPerRange = getAmountRange(amount);
-        return transferAmountPerRange.value;
-    }
-    public static TransferAmountPerRange getAmountRange(double amount){
-        if (amount < 1000000.0) {
-            return TransferAmountPerRange.lessThan1Million;
-        }
-        if (amount>1000000.0 && amount < 2000000.0){
-            return TransferAmountPerRange.between1and2Million;
-        }
-        if (amount>2000000.0 && amount < 3000000.0){
-            return TransferAmountPerRange.between2and3Million;
-        }
-        if (amount>3000000.0 && amount < 4000000.0){
-            return TransferAmountPerRange.between3and4Million;
-        }
-        if (amount>4000000.0 && amount < 5000000.0){
-            return TransferAmountPerRange.between4and5Million;
-        }
-        if (amount>5000000.0 && amount < 6000000.0){
-            return TransferAmountPerRange.between5and6Million;
-        }
-        if (amount>6000000.0 && amount < 7000000.0){
-            return TransferAmountPerRange.between6and7Million;
-        }
-        if (amount>7000000.0 && amount < 8000000.0){
-            return TransferAmountPerRange.between7and8Million;
-        }
-        if (amount>8000000.0 && amount < 9000000.0){
-            return TransferAmountPerRange.between8and9Million;
-        }
-        if (amount>9000000.0 && amount < 10000000.0){
-            return TransferAmountPerRange.between9and10Million;
-        }
-        if (amount>10000000.0 && amount < 11000000.0){
-            return TransferAmountPerRange.between10and11Million;
-        }
-        if (amount>11000000.0 && amount < 12000000.0){
-            return TransferAmountPerRange.between11and12Million;
-        }
-        if (amount>12000000.0 && amount < 13000000.0) {
-            return TransferAmountPerRange.between12and13Million;
-        }
-        if (amount>13000000.0 && amount < 14000000.0){
-            return TransferAmountPerRange.between13and14Million;
-        }
-        return TransferAmountPerRange.between14and15Million;
 
+    public static double calculateFees(double amount) {
+        if (amount < 10_000) {
+            return 300.0;
+        }
+
+        if (amount >= 10_000 && amount < 100_000) {
+            return 900.0;
+        }
+
+        if (amount >= 100_000 && amount < 1_000_000) {
+            return 1000.0;
+        }
+
+        if (amount >= 1_000_000 && amount < 10_000_000) {
+            return 1500.0;
+        }
+
+        if (amount >= 10_000_000 && amount < 100_000_000) {
+            return 2400.0;
+        }
+
+        if (amount >= 100_000_000 && amount < 1_000_000_000) {
+            return 3500.0;
+        }
+
+        return 5000.0;
     }
 }
-
