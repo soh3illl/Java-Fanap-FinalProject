@@ -3,7 +3,9 @@ package org.example.bank;
 import org.example.core.exception.InsufficientFundsException;
 import org.example.core.exception.InvalidTransactionException;
 
-public class BankAccount {
+import java.io.Serializable;
+
+public class BankAccount implements Serializable {
     private String accountNumber;
     private String accountHolderName;
     private double balance;
@@ -58,5 +60,13 @@ public class BankAccount {
         }
 
         this.balance -= amount;
+    }
+
+    @Override
+    public String toString() {
+        return "BankAccount{" +
+                "accountNumber='" + accountNumber + '\'' +
+                ", accountHolderName='" + accountHolderName + '\'' +
+                '}';
     }
 }
