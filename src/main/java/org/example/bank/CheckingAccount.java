@@ -37,10 +37,11 @@ public class CheckingAccount extends BankAccount {
         }
 
         this.setBalance(this.getBalance() - amount);
-        deductFees(fee);
+        deductFees(amount);
     }
 
-    public void deductFees(double fee) {
+    public void deductFees(double amount) {
+        double fee = calculateFees(amount);
         this.setBalance(this.getBalance() - fee);
     }
 
