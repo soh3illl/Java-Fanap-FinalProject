@@ -59,4 +59,13 @@ public class BankAccount {
 
         this.balance -= amount;
     }
+
+    @Override
+    public String toString() {
+        return "BankAccount{" +
+                "accountNumber='" + accountNumber + '\'' +
+                ", accountHolderName='" + accountHolderName + '\'' +
+                ", balance=" + balance +
+                '}';
+    }
 }
