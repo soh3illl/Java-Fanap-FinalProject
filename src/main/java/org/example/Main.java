@@ -8,7 +8,7 @@ import org.example.controller.FileAccessor;
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) throws ClassNotFoundException {
-        Class.forName("org.example.controller.FileAccessor");
+        FileAccessor.initializer();
         BankAccount bankAccount = new BankAccount("124","mina",19.0);
         BankAccount bankAccount2 = new BankAccount("125","mina",19.0);
         BankAccount bankAccount3 = new BankAccount("124","mina",19.0);

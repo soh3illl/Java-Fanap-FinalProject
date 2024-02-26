@@ -16,7 +16,7 @@ public class FileAccessor {
     private static AppendableObjectOutputStream appendableObjectOutputStream;
     private static ObjectInputStream objectInputStream;
 
-    static {
+    public static void initializer(){
         properties = new Properties();
         try (InputStream inputStream = Files.newInputStream(Paths.get("./src/main/resources/fileSetting.txt"));) {
             properties.load(inputStream);
