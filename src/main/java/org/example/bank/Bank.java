@@ -23,4 +23,8 @@ public class Bank {
     public List listAccounts() {
         return new ArrayList(accounts.values());
     }
+
+    public void setAccounts(Map<String, BankAccount> accounts) {
+        this.accounts = accounts;
+    }
 }

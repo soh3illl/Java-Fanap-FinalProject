@@ -1,11 +1,13 @@
 package org.example.controller;
 
+import org.example.bank.Bank;
 import org.example.bank.BankAccount;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 
@@ -16,7 +18,7 @@ public class FileAccessor {
     private static AppendableObjectOutputStream appendableObjectOutputStream;
     private static ObjectInputStream objectInputStream;
 
-    public static void initializer(){
+    public static void initializer(Bank bank){
         properties = new Properties();
         try (InputStream inputStream = Files.newInputStream(Paths.get("./src/main/resources/fileSetting.txt"));) {
             properties.load(inputStream);
@@ -30,7 +32,7 @@ public class FileAccessor {
             file.mkdir();
         }
         else {
-            deserialize();
+            bank.setAccounts(deserialize());
         }
     }
 
@@ -57,14 +59,14 @@ public class FileAccessor {
             System.exit(-1);
         }
     }
-    public static List<BankAccount> deserialize() {
+    public static HashMap<String , BankAccount> deserialize() {
         openReadConnection();
         System.out.println("deserializing");
-        List<BankAccount> bankAccounts = new ArrayList<>();
+        HashMap<String , BankAccount> bankAccounts = new HashMap<>();
         while (true) {
             try {
                 BankAccount obj = (BankAccount) objectInputStream.readObject();
-                bankAccounts.add(obj);
+                bankAccounts.put(obj.getAccountNumber() , obj);
             } catch (ClassNotFoundException e) {
                 System.err.println("Unable to cast object. Class not found during deserialization: "+e.getMessage());
                 e.printStackTrace();
