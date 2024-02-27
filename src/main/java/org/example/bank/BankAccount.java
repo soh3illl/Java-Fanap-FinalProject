@@ -67,6 +67,7 @@ public class BankAccount implements Serializable {
         return "BankAccount{" +
                 "accountNumber='" + accountNumber + '\'' +
                 ", accountHolderName='" + accountHolderName + '\'' +
+                ", balance=" + balance +
                 '}';
     }
 }
