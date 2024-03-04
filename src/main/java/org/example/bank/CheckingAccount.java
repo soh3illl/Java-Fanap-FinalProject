@@ -24,7 +24,7 @@ public class CheckingAccount extends BankAccount {
     }
 
     @Override
-    public void withdraw(double amount) throws InvalidTransactionException {
+    public synchronized void withdraw(double amount) throws InvalidTransactionException {
         double fee = calculateFees(amount);
         double withdrawalAmount = amount + fee;
 

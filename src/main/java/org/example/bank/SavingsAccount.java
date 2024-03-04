@@ -25,7 +25,7 @@ public class SavingsAccount extends BankAccount {
     }
 
     @Override
-    public void withdraw(double amount) throws InvalidTransactionException {
+    public synchronized void withdraw(double amount) throws InvalidTransactionException {
         if ((this.getBalance() - amount) < this.getMinimumBalance()) {
             throw new InvalidTransactionException("This amount could not be withdrawn because it is more than minimum balance");
         }

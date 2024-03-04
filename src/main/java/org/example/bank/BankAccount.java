@@ -4,12 +4,14 @@ import org.example.core.exception.InsufficientFundsException;
 import org.example.core.exception.InvalidTransactionException;
 
 import java.io.Serializable;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class BankAccount implements Serializable {
     private String accountNumber;
     private String accountHolderName;
     private double balance;
-
+    private final Lock lock = new ReentrantLock();
     public BankAccount(String accountNumber, String accountHolderName, double balance) {
         this.accountNumber = accountNumber;
         this.accountHolderName = accountHolderName;
@@ -43,10 +45,15 @@ public class BankAccount implements Serializable {
     }
 
     public void setBalance(double balance) {
-        this.balance = balance;
+        lock.lock();
+        try {
+            this.balance = balance;
+        } finally {
+            lock.unlock();
+        }
     }
 
-    public void deposit(double amount) {
+    public synchronized void deposit(double amount) {
         if (amount < 0) {
             throw new IllegalArgumentException("Provide a positive amount");
         }
@@ -54,7 +61,7 @@ public class BankAccount implements Serializable {
         this.balance += amount;
     }
 
-    public void withdraw(double amount) throws InvalidTransactionException {
+    public synchronized void withdraw(double amount) throws InvalidTransactionException {
         if (amount > this.balance || amount <= 0) {
             throw new InsufficientFundsException("This amount could not be withdrawn");
         }
