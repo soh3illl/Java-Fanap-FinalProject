@@ -20,7 +20,7 @@ public class Bank {
         return accounts.get(accountNumber);
     }
 
-    public List listAccounts() {
+    public List<BankAccount> listAccounts() {
         return new ArrayList(accounts.values());
     }
 
