@@ -1,30 +1,39 @@
-package org.example;
+package org.example.bank;
 
-import org.example.bank.BankAccount;
-import org.example.bank.SavingsAccount;
 import org.example.core.exception.InvalidTransactionException;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TestSynchronization {
-    public static void main(String[] args) {
-        SavingsAccount savingsAccount1 = new SavingsAccount("12341", "mahla");
+class SynchronizationTest {
+    public static BankAccount savingsAccount1;
+    public static BankAccount savingsAccount2;
+    public static BankAccount savingsAccount3;
+    public static BankAccount savingsAccount4;
+    public static List<BankAccount> bankAccounts;
+    @BeforeAll
+    static void setUp() {
+        savingsAccount1 = new SavingsAccount("12341", "mahla");
         savingsAccount1.setBalance(500000.0);
 
-        SavingsAccount savingsAccount2 = new SavingsAccount("12342", "mahsa");
+        savingsAccount2 = new SavingsAccount("12342", "mahsa");
         savingsAccount2.setBalance(500000.0);
 
-        SavingsAccount savingsAccount3 = new SavingsAccount("12343", "soheil");
+        savingsAccount3 = new SavingsAccount("12343", "soheil");
         savingsAccount3.setBalance(500000.0);
 
-        SavingsAccount savingsAccount4 = new SavingsAccount("12344", "bahare");
+        savingsAccount4 = new SavingsAccount("12344", "bahare");
         savingsAccount4.setBalance(500000.0);
-        List<SavingsAccount> bankAccounts = new ArrayList<>();
+        bankAccounts = new ArrayList<>();
         bankAccounts.add(savingsAccount1);
         bankAccounts.add(savingsAccount2);
         bankAccounts.add(savingsAccount3);
         bankAccounts.add(savingsAccount4);
+    }
+    @Test
+    void testSynchronization() {
         while (true) {
             Thread thread1 = new Thread(() -> {
                 try {
@@ -85,4 +94,5 @@ public class TestSynchronization {
             System.out.println(j);
         }
     }
+
 }
