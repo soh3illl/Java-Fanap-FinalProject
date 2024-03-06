@@ -28,16 +28,23 @@ class SavingsAccountServiceTest {
         long endTimeWithoutExecutor = System.currentTimeMillis();
         long elapsedTimeWithoutExecutor = endTimeWithoutExecutor - startTimeWithoutExecutor;
 
-
+        double newBalanceWithoutExecutor = 0.0;
+        for (SavingsAccount s:bankAccounts) {
+            newBalanceWithoutExecutor+=s.getBalance();
+        }
         resetBalances(bankAccounts);
 
         long startTimeWithExecutor = System.currentTimeMillis();
         applyInterestWithExecutor(bankAccounts);
         long endTimeWithExecutor = System.currentTimeMillis();
         long elapsedTimeWithExecutor = endTimeWithExecutor - startTimeWithExecutor;
-
+        double newBalanceWithExecutor = 0.0;
+        for (SavingsAccount s:bankAccounts) {
+            newBalanceWithExecutor+=s.getBalance();
+        }
         System.out.println("Time without ExecutorService: " + elapsedTimeWithoutExecutor + " milliseconds");
         System.out.println("Time with ExecutorService: " + elapsedTimeWithExecutor + " milliseconds");
+//        System.out.println(newBalanceWithExecutor +" "+ newBalanceWithoutExecutor);
     }
 
     private static void applyInterestWithoutExecutor(List<SavingsAccount> accounts) {
@@ -48,7 +55,7 @@ class SavingsAccountServiceTest {
 
     private static void resetBalances(List<SavingsAccount> accounts) {
         for (SavingsAccount account : accounts) {
-            account.setBalance(500000.0);
+            account.setBalance(50000.0);
         }
     }
 }
