@@ -8,10 +8,14 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class BankAccount implements Serializable {
+    public enum Type {BASE, CHECKING, SAVING}
+
+    protected Type type = Type.BASE;
     private String accountNumber;
     private String accountHolderName;
     private double balance;
     private final Lock lock = new ReentrantLock();
+
     public BankAccount(String accountNumber, String accountHolderName, double balance) {
         this.accountNumber = accountNumber;
         this.accountHolderName = accountHolderName;
@@ -38,6 +42,10 @@ public class BankAccount implements Serializable {
 
     public void setAccountHolderName(String accountHolderName) {
         this.accountHolderName = accountHolderName;
+    }
+
+    public Type getType() {
+        return this.type;
     }
 
     public double getBalance() {
