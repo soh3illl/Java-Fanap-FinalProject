@@ -1,5 +1,6 @@
 package org.example.bank;
 
+import org.example.annotations.DeprecatedMethod;
 import org.example.core.exception.InsufficientFundsException;
 import org.example.core.exception.InvalidTransactionException;
 
@@ -60,8 +61,24 @@ public class BankAccount implements Serializable {
 
         this.balance += amount;
     }
+    @DeprecatedMethod(reason = "not being synchronized" , replacement = "Deposit")
+    public void notSynchronizedDeposit(double amount) {
+        if (amount < 0) {
+            throw new IllegalArgumentException("Provide a positive amount");
+        }
+
+        this.balance += amount;
+    }
 
     public synchronized void withdraw(double amount) throws InvalidTransactionException {
+        if (amount > this.balance || amount <= 0) {
+            throw new InsufficientFundsException("This amount could not be withdrawn");
+        }
+
+        this.balance -= amount;
+    }
+    @DeprecatedMethod(reason = "not being synchronized" , replacement = "withdraw")
+    public void notSynchronizedWithdraw(double amount) throws InvalidTransactionException {
         if (amount > this.balance || amount <= 0) {
             throw new InsufficientFundsException("This amount could not be withdrawn");
         }
