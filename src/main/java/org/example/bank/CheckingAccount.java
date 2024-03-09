@@ -1,5 +1,6 @@
 package org.example.bank;
 
+import org.example.annotations.DeprecatedMethod;
 import org.example.core.exception.InsufficientFundsException;
 import org.example.core.exception.InvalidTransactionException;
 
@@ -39,6 +40,19 @@ public class CheckingAccount extends BankAccount {
 
         this.setBalance(this.getBalance() - amount);
         deductFees(amount);
+    }
+    @DeprecatedMethod(reason = "not calculating fees and not being synchronized",replacement = "withdraw")
+    public void withdrawWithoutFees(double amount) {
+
+        if (amount <= 0) {
+            throw new InsufficientFundsException("The entered amount is negative");
+        }
+
+        if (this.getBalance() + this.getOverdraftLimit() < amount) {
+            throw new InsufficientFundsException("This amount could not be withdrawn because it is more than overdraftLimit");
+        }
+
+        this.setBalance(this.getBalance() - amount);
     }
 
     public void deductFees(double amount) {
