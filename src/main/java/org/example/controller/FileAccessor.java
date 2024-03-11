@@ -6,9 +6,7 @@ import org.example.bank.BankAccount;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Properties;
 
 public class FileAccessor {
@@ -61,7 +59,6 @@ public class FileAccessor {
     }
     public static HashMap<String , BankAccount> deserialize() {
         openReadConnection();
-        System.out.println("deserializing");
         HashMap<String , BankAccount> bankAccounts = new HashMap<>();
         while (true) {
             try {
@@ -83,7 +80,6 @@ public class FileAccessor {
 
     public static void serialize(BankAccount bankAccount) {
         openWriteConnection();
-        System.out.println("serializing");
         try {
             if (objectOutputStream != null) {
                 objectOutputStream.writeObject(bankAccount);

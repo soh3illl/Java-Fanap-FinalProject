@@ -12,7 +12,7 @@ class FileAccessorTest {
     public static void setUp() {
         Bank bank = new Bank();
         FileAccessor.initializer(bank);
-        for (BankAccount bankAccount: bank.listAccounts()) {
+        for (Object bankAccount: bank.listAccounts()) {
             System.out.println(bankAccount);
         }
     }
