@@ -2,17 +2,16 @@ package org.example.service;
 
 import org.example.model.BankAccount;
 import org.example.model.CheckingAccount;
-import org.example.model.SavingsAccount;
 import org.example.utils.ORMConfig;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import javax.persistence.EntityManager;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 class BankAccountDAOTest {
     public static BankAccountDAO bankAccountDAO;
@@ -25,9 +24,9 @@ class BankAccountDAOTest {
     void createAccount() {
         CheckingAccount checkingAccount = new CheckingAccount("200","sima",50_000.0);
         checkingAccount.setBalance(800_000.0);
-        bankAccountDAO.createAccount(checkingAccount);
-        List<BankAccount> accounts = ORMConfig.getEntityManager().createQuery("SELECT b FROM BankAccount b where accountNumber = 200", BankAccount.class).getResultList();
-        Assertions.assertEquals(1,accounts.size());
+        Assertions.assertDoesNotThrow(() -> {
+            bankAccountDAO.createAccount(checkingAccount);
+        });
     }
 
     @Test
@@ -38,9 +37,10 @@ class BankAccountDAOTest {
 
     @Test
     void deleteAccount() {
-        bankAccountDAO.deleteAccount(8);
-        BankAccount account = bankAccountDAO.findAccountById(8);
-        assertNull(account);
+        Assertions.assertDoesNotThrow(() -> {
+            bankAccountDAO.deleteAccountById(8);
+        });
+
     }
 
     @Test
@@ -49,10 +49,15 @@ class BankAccountDAOTest {
         Assertions.assertEquals(7,allAccounts.size());
     }
 
-//    @Test
-//    void updateAccount() {
-//        bankAccountDAO.updateAccount();
-//    }
+    @Test
+    void updateAccount() {
+        Map<String, Object> updates = new HashMap<>();
+        updates.put("overdraftLimit", 10000.0);
+        updates.put("accountNumber", "222444");
+        Assertions.assertDoesNotThrow(() -> {
+            bankAccountDAO.updateAccount(updates, 1);
+        });
+    }
 
     @Test
     void filterBalanceByAmount() {

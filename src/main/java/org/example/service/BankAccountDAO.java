@@ -7,14 +7,18 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import java.util.Map;
 
 public class BankAccountDAO {
 
     private EntityManager entityManager;
+
     public BankAccountDAO(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
+
     public EntityManager getEntityManager() {
         return entityManager;
     }
@@ -30,7 +34,7 @@ public class BankAccountDAO {
         return entityManager.find(BankAccount.class, accountId);
     }
 
-    public void deleteAccount(int accountId) {
+    public void deleteAccountById(int accountId) {
         EntityTransaction transaction = entityManager.getTransaction();
         transaction.begin();
         BankAccount bankAccount = entityManager.find(BankAccount.class, accountId);
@@ -44,15 +48,21 @@ public class BankAccountDAO {
         return entityManager.createQuery("SELECT b FROM BankAccount b", BankAccount.class).getResultList();
     }
 
-//    public void updateAccount(BankAccount newAccount , Integer id) {
-//        EntityTransaction transaction = this.getEntityManager().getTransaction();
-//        transaction.begin();
-//        BankAccount updatedAccount = this.getEntityManager().find(BankAccount.class, id);
-//        updatedAccount.setBalance(newAccount.getBalance());
-//        updatedAccount.setAccountNumber(newAccount.getAccountNumber());
-//        updatedAccount.setAccountHolderName(newAccount.getAccountHolderName());
-//        transaction.commit();
-//    }
+    public void updateAccount(Map<String, Object> updates, Integer id) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        EntityTransaction transaction = this.getEntityManager().getTransaction();
+        transaction.begin();
+        BankAccount updatedAccount = this.getEntityManager().find(BankAccount.class, id);
+
+        for (Map.Entry<String, Object> entry : updates.entrySet()) {
+            String attributeName = entry.getKey();
+            Object attributeValue = entry.getValue();
+            String setterMethodName = "set" + attributeName.substring(0, 1).toUpperCase() + attributeName.substring(1);
+            updatedAccount.getClass().getMethod(setterMethodName, attributeValue.getClass()).invoke(updatedAccount, attributeValue);
+
+        }
+
+        transaction.commit();
+    }
 
     public List<BankAccount> filterBalanceByAmount(double balance) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
@@ -63,23 +73,4 @@ public class BankAccountDAO {
 
         return entityManager.createQuery(criteriaQuery).getResultList();
     }
-
-//    public static void main(String[] args) {
-////        TransactionDAO transactionDAO = new TransactionDAO(ORMConfig.getEntityManager());
-//        BankAccountDAO checkingAccountDAO = new BankAccountDAO(ORMConfig.getEntityManager());
-//        CheckingAccount checkingAccount1 = new CheckingAccount("1238","zahra",50_000.0);
-//        checkingAccount1.setBalance(800_000.0);
-//        CheckingAccount checkingAccount2 = new CheckingAccount("1239","soheil",50_000.0);
-//        checkingAccount2.setBalance(900_000.0);
-//        SavingsAccount savingsAccount = new SavingsAccount("12342","reza");
-//        savingsAccount.setBalance(500_000);
-////        checkingAccountDAO.createAccount(checkingAccount1);
-////        checkingAccountDAO.createAccount(checkingAccount2);
-////        checkingAccountDAO.createAccount(savingsAccount);
-////        checkingAccountDAO.createCheckingAccount(savingsAccount);
-////        checkingAccountDAO.updateCheckingAccount(checkingAccount2 , 1);
-////        for (BankAccount b: checkingAccountDAO.findAccountsByBalanceGreaterThan(500_000)) {
-////            System.out.println(b);
-////        }
-//    }
 }

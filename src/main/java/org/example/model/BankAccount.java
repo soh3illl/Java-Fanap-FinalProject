@@ -80,7 +80,7 @@ public class BankAccount implements Serializable {
         return balance;
     }
 
-    public void setBalance(double balance) {
+    public void setBalance(Double balance) {
         lock.lock();
         try {
             this.balance = balance;

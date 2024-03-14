@@ -3,7 +3,7 @@ package org.example.model;
 import org.example.core.exception.InvalidTransactionException;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.util.Date;
 
 
 @Entity
@@ -20,6 +20,7 @@ public class Transaction {
     @JoinColumn(name = "to_account_id")
     private BankAccount toAccount;
     private Double transferAmount;
+    @Column(columnDefinition = "DATETIME default CURRENT_TIMESTAMP")
     private Date date;
 
     public Date getDate() {
@@ -42,6 +43,7 @@ public class Transaction {
         this.fromAccount = fromAccount;
         this.toAccount = toAccount;
         this.transferAmount = transferAmount;
+        this.date = new Date(System.currentTimeMillis());
     }
 
     public Transaction() {
