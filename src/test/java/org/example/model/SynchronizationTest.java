@@ -1,13 +1,9 @@
-package org.example.bank;
+package org.example.model;
 
 import org.example.core.exception.InvalidTransactionException;
-import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-
-import java.util.ArrayList;
-import java.util.List;
 
 class SynchronizationTest {
     public static BankAccount savingsAccount1;

@@ -1,7 +1,7 @@
 package org.example;
 
 import org.example.annotations.DeprecatedMethod;
-import org.example.bank.BankAccount;
+import org.example.model.BankAccount;
 import org.reflections.Reflections;
 
 import java.lang.reflect.Method;

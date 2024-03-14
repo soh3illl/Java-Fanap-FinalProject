@@ -1,9 +1,11 @@
-package org.example.bank;
+package org.example.model;
 
 import org.example.annotations.DeprecatedMethod;
-import org.example.core.exception.InsufficientFundsException;
 import org.example.core.exception.InvalidTransactionException;
 
+import javax.persistence.Entity;
+
+@Entity
 public class SavingsAccount extends BankAccount {
     private final double interestRate = 0.2;
     private final double minimumBalance = 10_000;
@@ -11,6 +13,10 @@ public class SavingsAccount extends BankAccount {
     public SavingsAccount(String accountNumber, String accountHolderName) {
         super(accountNumber, accountHolderName);
         this.type = Type.SAVING;
+    }
+
+    public SavingsAccount() {
+
     }
 
     public double getMinimumBalance() {
@@ -42,5 +48,13 @@ public class SavingsAccount extends BankAccount {
         }
 
         super.withdraw(amount);
+    }
+
+    @Override
+    public String toString() {
+        return super.toString()+" SavingsAccount{" +
+                "interestRate=" + interestRate +
+                ", minimumBalance=" + minimumBalance +
+                "} ";
     }
 }

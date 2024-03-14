@@ -1,11 +1,7 @@
-package org.example.bank;
+package org.example.model;
 
-import org.example.core.exception.InvalidTransactionException;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-
-import java.util.concurrent.CountDownLatch;
 
 class ReentrantLockTest {
     public static BankAccount savingsAccount1;
