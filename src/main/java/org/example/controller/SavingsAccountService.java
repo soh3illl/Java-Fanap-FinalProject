@@ -1,6 +1,6 @@
 package org.example.controller;
 
-import org.example.bank.SavingsAccount;
+import org.example.model.SavingsAccount;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;

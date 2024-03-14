@@ -1,9 +1,12 @@
-package org.example.bank;
+package org.example.model;
 
 import org.example.annotations.DeprecatedMethod;
 import org.example.core.exception.InsufficientFundsException;
 import org.example.core.exception.InvalidTransactionException;
 
+import javax.persistence.Entity;
+
+@Entity
 public class CheckingAccount extends BankAccount {
     private Double overdraftLimit;
 
@@ -15,6 +18,11 @@ public class CheckingAccount extends BankAccount {
     public CheckingAccount(String accountNumber, String accountHolderName, Double overdraftLimit) {
         super(accountNumber, accountHolderName);
         this.overdraftLimit = overdraftLimit;
+    }
+
+
+    public CheckingAccount() {
+
     }
 
     public Double getOverdraftLimit() {
@@ -86,5 +94,12 @@ public class CheckingAccount extends BankAccount {
         }
 
         return 5000.0;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString()+" CheckingAccount{" +
+                "overdraftLimit=" + overdraftLimit +
+                "} ";
     }
 }

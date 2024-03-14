@@ -1,6 +1,6 @@
 package org.example.controller;
 
-import org.example.bank.SavingsAccount;
+import org.example.model.SavingsAccount;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

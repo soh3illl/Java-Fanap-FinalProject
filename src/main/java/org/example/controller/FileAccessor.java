@@ -1,7 +1,7 @@
 package org.example.controller;
 
-import org.example.bank.Bank;
-import org.example.bank.BankAccount;
+import org.example.model.Bank;
+import org.example.model.BankAccount;
 
 import java.io.*;
 import java.nio.file.Files;

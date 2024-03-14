@@ -1,21 +1,42 @@
-package org.example.bank;
+package org.example.model;
 
 import org.example.annotations.DeprecatedMethod;
 import org.example.core.exception.InsufficientFundsException;
 import org.example.core.exception.InvalidTransactionException;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public class BankAccount implements Serializable {
+    public BankAccount() {
+
+    }
+
     public enum Type {BASE, CHECKING, SAVING}
 
-    protected Type type = Type.BASE;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Integer id;
     private String accountNumber;
     private String accountHolderName;
     private double balance;
+    @Transient
     private final Lock lock = new ReentrantLock();
+    @Transient
+    protected Type type = Type.BASE;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public BankAccount(String accountNumber, String accountHolderName, double balance) {
         this.accountNumber = accountNumber;
@@ -23,6 +44,12 @@ public class BankAccount implements Serializable {
         this.balance = balance;
     }
 
+    public BankAccount(Integer id, String accountNumber, String accountHolderName, double balance) {
+        this.id = id;
+        this.accountNumber = accountNumber;
+        this.accountHolderName = accountHolderName;
+        this.balance = balance;
+    }
 
     public BankAccount(String accountNumber, String accountHolderName) {
         this(accountNumber, accountHolderName, 0.0);
