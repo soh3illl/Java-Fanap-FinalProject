@@ -1,18 +1,35 @@
-package org.example.bank;
+package org.example.model;
 
-import org.example.core.exception.InsufficientFundsException;
-import org.example.core.exception.InvalidTransactionException;
+import org.example.annotations.DeprecatedMethod;
+import org.example.exception.InsufficientFundsException;
+import org.example.exception.InvalidTransactionException;
 
+import javax.persistence.Entity;
+import javax.persistence.Transient;
+
+@Entity
 public class CheckingAccount extends BankAccount {
     private Double overdraftLimit;
+    @Transient
+    protected Type type = Type.CHECKING;
 
-    public CheckingAccount(String accountNumber, String accountHolderName) {
-        super(accountNumber, accountHolderName);
+    public CheckingAccount(String accountNumber, AccountHolder accountHolder) {
+        super(accountNumber, accountHolder);
+        this.type = Type.CHECKING;
     }
 
-    public CheckingAccount(String accountNumber, String accountHolderName, Double overdraftLimit) {
-        super(accountNumber, accountHolderName);
+    public CheckingAccount(String accountNumber, AccountHolder accountHolder, Double overdraftLimit) {
+        super(accountNumber, accountHolder);
         this.overdraftLimit = overdraftLimit;
+    }
+
+    @Override
+    public Type getType() {
+        return type;
+    }
+
+    public CheckingAccount() {
+
     }
 
     public Double getOverdraftLimit() {
@@ -24,7 +41,7 @@ public class CheckingAccount extends BankAccount {
     }
 
     @Override
-    public void withdraw(double amount) throws InvalidTransactionException {
+    public synchronized void withdraw(double amount) throws InvalidTransactionException {
         double fee = calculateFees(amount);
         double withdrawalAmount = amount + fee;
 
@@ -38,6 +55,19 @@ public class CheckingAccount extends BankAccount {
 
         this.setBalance(this.getBalance() - amount);
         deductFees(amount);
+    }
+    @DeprecatedMethod(reason = "not calculating fees and not being synchronized",replacement = "withdraw")
+    public void withdrawWithoutFees(double amount) {
+
+        if (amount <= 0) {
+            throw new InsufficientFundsException("The entered amount is negative");
+        }
+
+        if (this.getBalance() + this.getOverdraftLimit() < amount) {
+            throw new InsufficientFundsException("This amount could not be withdrawn because it is more than overdraftLimit");
+        }
+
+        this.setBalance(this.getBalance() - amount);
     }
 
     public void deductFees(double amount) {
@@ -71,5 +101,12 @@ public class CheckingAccount extends BankAccount {
         }
 
         return 5000.0;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString()+" CheckingAccount{" +
+                "overdraftLimit=" + overdraftLimit +
+                "} ";
     }
 }

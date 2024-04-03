@@ -1,4 +1,4 @@
-package org.example.core.exception;
+package org.example.exception;
 
 public class InvalidTransactionException extends Exception{
     public InvalidTransactionException() {
