@@ -36,9 +36,10 @@
                    required
             ><br><br>
             balance
-            <input type="text"
+            <input type="number"
                    name="balance"
                    value="<%=bankAccount.getBalance()%>"
+                   min="1"
                    required
             ><br><br>
             <input type="hidden"
