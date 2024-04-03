@@ -19,7 +19,9 @@
     <body>
         <div class="container">
             <h1>Create new account</h1>
-            <form class="mt-4" method="post" action="${pageContext.request.contextPath}/accounts/create">
+            <form class="mt-4"
+                  method="post"
+                  action="${pageContext.request.contextPath}/accounts/create">
                 <div class="mb-3">
                     <label for="accountNumberId"
                            class="form-label">Account Number</label>
@@ -37,6 +39,7 @@
                            class="form-control"
                            id="amountID"
                            name="amount"
+                           min="1"
                            required
                     >
                 </div>
@@ -50,7 +53,9 @@
                         <option value="saving">saving</option>
                     </select>
                 </div>
-                <input type="hidden" name="userId" value="<%=request.getParameter("id")%>">
+                <input type="hidden"
+                       name="userId"
+                       value="<%=request.getParameter("id")%>">
                 <button type="submit"
                         class="btn btn-primary">Submit
                 </button>
