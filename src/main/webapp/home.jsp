@@ -107,12 +107,12 @@
                 crossorigin="anonymous"></script>
         <script>
             const template = `
-           <div class="alert alert-danger" role="alert">
-                Error ! wrong username or password
-            </div>
+               <div class="alert alert-danger" role="alert">
+                    Error ! wrong username or password
+                </div>
             `;
 
-            if (/'*error'/.test(window.local.href)) {
+            if (window.location.href.includes("error")) {
                 const form = document.querySelector(".form-signin");
                 form.insertAdjacentHTML("afterbegin", template);
             }
