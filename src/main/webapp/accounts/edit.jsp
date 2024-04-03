@@ -1,5 +1,7 @@
-<%@ page import="org.example.model.Bank" %>
-<%@ page import="org.example.model.BankAccount" %>
+<%@ page
+        import="org.example.model.Bank" %>
+<%@ page
+        import="org.example.model.BankAccount" %>
 <%@ page
         contentType="text/html;charset=UTF-8"
         language="java" %>
@@ -22,11 +24,27 @@
         <div class="container">
             <h1>Edit Account</h1>
         </div>
-        <form name="form" method="post" action="${pageContext.request.contextPath}/accounts/edit" target="_blank">
+        <form name="form"
+              method="post"
+              action="${pageContext.request.contextPath}/accounts/edit"
+              target="_blank">
                 <% BankAccount bankAccount= (BankAccount) request.getAttribute("bankAccount");%>
-            account number <input type="text" name="accountNumber" value="<%=bankAccount.getAccountNumber()%>"><br><br>
-            balance <input type="text" name="balance" value="<%=bankAccount.getBalance()%>"><br><br>
-            <input type="hidden" value="<%=bankAccount.getId()%>" name="accountId"/>
-            <input type = "submit" value = "update account" />
+            account number
+            <input type="text"
+                   name="accountNumber"
+                   value="<%=bankAccount.getAccountNumber()%>"
+                   required
+            ><br><br>
+            balance
+            <input type="text"
+                   name="balance"
+                   value="<%=bankAccount.getBalance()%>"
+                   required
+            ><br><br>
+            <input type="hidden"
+                   value="<%=bankAccount.getId()%>"
+                   name="accountId"/>
+            <input type="submit"
+                   value="update account"/>
     </body>
 </html>
