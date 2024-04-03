@@ -1,4 +1,4 @@
-package org.example.service;
+package org.example.model.DAOs;
 
 import org.example.model.*;
 
@@ -45,7 +45,9 @@ public class BankAccountDAO {
     }
 
     public List<BankAccount> getAllAccounts() {
-        return entityManager.createQuery("SELECT b FROM BankAccount b", BankAccount.class).getResultList();
+        entityManager.clear();
+        List<BankAccount> account = entityManager.createQuery("SELECT b FROM BankAccount b", BankAccount.class).getResultList();
+        return account;
     }
 
     public void updateAccount(Map<String, Object> updates, Integer id) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {

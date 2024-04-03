@@ -1,8 +1,9 @@
-package org.example.controller;
+package org.example.utils;
 
 import org.example.model.AccountHolder;
 import org.example.model.Bank;
 import org.example.model.BankAccount;
+import org.example.utils.FileAccessor;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 

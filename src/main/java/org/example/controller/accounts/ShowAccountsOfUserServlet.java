@@ -1,8 +1,9 @@
-package org.example.servlet.accounts;
+package org.example.controller.accounts;
 
 
 import org.example.model.AccountHolder;
-import org.example.service.UserDAO;
+import org.example.model.DAOs.UserDAO;
+import org.example.service.DataValidator;
 import org.example.utils.ORMConfig;
 
 import javax.servlet.ServletException;
@@ -23,7 +24,10 @@ public class ShowAccountsOfUserServlet extends HttpServlet {
     }
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//        System.out.println("in user account +++++++++++++++++++++++++++++++++++++++++++++++++++");
+        if (!DataValidator.hasRequiredParams(req,"id")){
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid form data");
+            return;
+        }
         int userId = Integer.parseInt(req.getParameter("id"));
         AccountHolder user =(AccountHolder) userDAO.findUserById(userId);
         req.setAttribute("bankAccounts", user.getBankAccounts());

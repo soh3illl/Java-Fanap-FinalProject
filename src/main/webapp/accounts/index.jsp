@@ -53,7 +53,7 @@
                             <input type="text" value="<%=bankAccount.getAccountHolder().getFirstName()%>">
                         </td>
                         <td>
-                            <form action="${pageContext.request.contextPath}/accounts/delete/"
+                            <form action="${pageContext.request.contextPath}/accounts/delete"
                                   class="btn-group"
                                   method="post">
                                 <input type="hidden"

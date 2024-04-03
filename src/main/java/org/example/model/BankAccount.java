@@ -123,6 +123,17 @@ public class BankAccount implements Serializable {
         this.balance -= amount;
     }
 
+    public static BankAccount createAccountBasedOnType(String accountType) {
+        switch (accountType) {
+            case "checking":
+                return new CheckingAccount();
+            case "savings":
+                return new SavingsAccount();
+            default:
+                throw new IllegalArgumentException("Invalid account type: " + accountType);
+        }
+    }
+
     @Override
     public String toString() {
         return "BankAccount{" +

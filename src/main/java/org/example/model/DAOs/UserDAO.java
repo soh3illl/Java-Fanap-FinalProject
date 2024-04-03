@@ -1,4 +1,4 @@
-package org.example.service;
+package org.example.model.DAOs;
 
 import org.example.model.AccountHolder;
 import org.example.model.BankEmployee;
@@ -29,6 +29,7 @@ public class UserDAO {
         transaction.commit();
     }
     public User findUserById(int userId) {
+        entityManager.clear();
         return entityManager.find(User.class, userId);
     }
 

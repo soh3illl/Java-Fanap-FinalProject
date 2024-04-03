@@ -1,14 +1,14 @@
-package org.example.service;
+package org.example.model;
 
 import org.example.model.BankAccount;
-import org.example.model.CheckingAccount;
+import org.example.model.DAOs.BankAccountDAO;
+import org.example.model.DAOs.TransactionDAO;
 import org.example.model.Transaction;
 import org.example.utils.ORMConfig;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import javax.swing.*;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -26,38 +26,33 @@ class TransactionDAOTest {
     }
 
     @Test
-    void createTransaction() {
-        BankAccountDAO bankAccountDAO = new BankAccountDAO(ORMConfig.getEntityManager());
-        BankAccount account1 = bankAccountDAO.findAccountById(1);
-        BankAccount account2 = bankAccountDAO.findAccountById(2);
-        Transaction transaction = new Transaction(account1 , account2 , 100.0 );
+    void givenTransactionDetails_whenCreatingTransaction_thenTransactionCreateSuccessfully() {
         Assertions.assertDoesNotThrow(() -> {
-            transactionDAO.createTransaction(transaction);
+            transactionDAO.createTransaction(7, 8, 1000.0);
         });
     }
 
     @Test
-    void findTransactionById() {
+    void givenTransactionId_whenFindingTransactionById_thenTransactionFound() {
         Transaction transaction = transactionDAO.findTransactionById(1);
-        Assertions.assertEquals(1,transaction.getId());
+        Assertions.assertEquals(1, transaction.getId());
     }
 
     @Test
-    void deleteTransaction() {
+    void givenTransactionId_whenDeletingTransaction_thenTransactionDeleteSuccessfully() {
         Assertions.assertDoesNotThrow(() -> {
             transactionDAO.deleteTransaction(5);
         });
     }
 
     @Test
-    void getAllTransactions() {
+    void whenGettingAllTransactions_thenCorrectNumberOfTransactionsReturned() {
         List<Transaction> transactions = transactionDAO.getAllTransactions();
-        Assertions.assertEquals(3 , transactions.size());
-
+        Assertions.assertEquals(3, transactions.size());
     }
 
     @Test
-    void updateTransaction() {
+    void givenTransactionUpdates_whenUpdatingTransaction_thenTransactionUpdateSuccessfully() {
         Map<String, Object> updates = new HashMap<>();
         BankAccount bankAccount = ORMConfig.getEntityManager().find(BankAccount.class, 4);
         updates.put("fromAccount", bankAccount);
@@ -68,11 +63,10 @@ class TransactionDAOTest {
     }
 
     @Test
-    void filterTransactionBasedOnDate() {
+    void givenDate_whenFilteringTransactions_thenCorrectNumberOfTransactionsReturned() {
         LocalDate dateString = LocalDate.parse("2024-03-14");
         Date date = Date.valueOf(dateString);
         List<Transaction> transactions = transactionDAO.filterTransactionBasedOnDate(date);
-        System.out.println(transactions.get(0));
-        Assertions.assertEquals(1 , transactions.size());
+        Assertions.assertEquals(1, transactions.size());
     }
 }

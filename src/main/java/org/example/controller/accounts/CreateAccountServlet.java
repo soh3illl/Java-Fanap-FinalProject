@@ -1,8 +1,9 @@
-package org.example.servlet.accounts;
+package org.example.controller.accounts;
 
 import org.example.model.*;
-import org.example.service.BankAccountDAO;
-import org.example.service.UserDAO;
+import org.example.model.DAOs.BankAccountDAO;
+import org.example.model.DAOs.UserDAO;
+import org.example.service.DataValidator;
 import org.example.utils.ORMConfig;
 
 import javax.servlet.ServletException;
@@ -25,13 +26,13 @@ public class CreateAccountServlet extends HttpServlet {
     }
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        BankAccount bankAccount;
-        if (req.getParameter("accountType").equals("checking")){
-            bankAccount = new CheckingAccount();
+        if (!DataValidator.hasRequiredParams(req, "userId", "accountNumber", "amount", "accountType") ||
+                !DataValidator.isValidAmount(req.getParameter("amount")) ||
+                !DataValidator.isAccountTypeValid(req.getParameter("accountType"))) {
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid form data");
+            return;
         }
-        else {
-            bankAccount = new SavingsAccount();
-        }
+        BankAccount bankAccount = BankAccount.createAccountBasedOnType(req.getParameter("accountType"));
         User user = userDAO.findUserById(Integer.parseInt(req.getParameter("userId")));
         bankAccount.setAccountHolder((AccountHolder) user);
         bankAccount.setAccountNumber(req.getParameter("accountNumber"));

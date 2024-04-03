@@ -1,6 +1,6 @@
-package org.example.servlet;
+package org.example.controller;
 import org.example.model.User;
-import org.example.service.UserDAO;
+import org.example.model.DAOs.UserDAO;
 import org.example.utils.ORMConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
-
+import org.example.service.DataValidator;
 @WebServlet(name = "homeServlet", value = "/")
 public class LoginServlet extends HttpServlet {
     UserDAO userDAO;
@@ -23,8 +23,12 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String username = (String) req.getParameter("username");
-        String password = (String) req.getParameter("password");
+        String username = req.getParameter("username");
+        String password = req.getParameter("password");
+        if (!DataValidator.hasRequiredParams(req,"username","password")){
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid form data");
+            return;
+        }
         List<User> users = userDAO.getUserByUsernameAndPassword(username, password);
         if (!users.isEmpty()) {
             User user = users.get(0);

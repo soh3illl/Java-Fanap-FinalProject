@@ -15,7 +15,6 @@ public class AccessFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse resp = (HttpServletResponse) response;
-
         HttpSession session = req.getSession();
         String userType = (String) session.getAttribute("userType");
         if (!userType.endsWith("BankEmployee")) {

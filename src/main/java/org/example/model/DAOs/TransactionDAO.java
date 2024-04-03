@@ -1,7 +1,9 @@
-package org.example.service;
+package org.example.model.DAOs;
 
+import org.example.exception.InvalidTransactionException;
 import org.example.model.BankAccount;
 import org.example.model.Transaction;
+import org.example.utils.ORMConfig;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -28,11 +30,31 @@ public class TransactionDAO {
         return entityManager;
     }
 
-    public void createTransaction(Transaction bankTransaction) {
+    public void createTransaction(int fromAccountId, int toAccountId, double amount) throws InvalidTransactionException {
         EntityTransaction transaction = entityManager.getTransaction();
-        transaction.begin();
-        entityManager.persist(bankTransaction);
-        transaction.commit();
+        try {
+            transaction.begin();
+            BankAccount fromAccount = entityManager.find(BankAccount.class, fromAccountId);
+            if (fromAccount == null) {
+                throw new InvalidTransactionException("From account not found.");
+            }
+            BankAccount toAccount = entityManager.find(BankAccount.class, toAccountId);
+            if (toAccount == null) {
+                throw new InvalidTransactionException("To account not found.");
+            }
+            fromAccount.withdraw(amount);
+            toAccount.deposit(amount);
+
+            Transaction bankTransaction = new Transaction(fromAccount, toAccount, amount);
+            entityManager.persist(bankTransaction);
+
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            throw e;
+        }
     }
 
     public Transaction findTransactionById(int transactionId) {

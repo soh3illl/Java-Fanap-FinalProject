@@ -1,4 +1,4 @@
-package org.example.controller;
+package org.example.utils;
 
 import org.example.model.Bank;
 import org.example.model.BankAccount;

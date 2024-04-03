@@ -1,8 +1,6 @@
-package org.example.servlet.accounts;
+package org.example.controller.accounts;
 
-import org.example.model.BankAccount;
-import org.example.service.BankAccountDAO;
-import org.example.service.UserDAO;
+import org.example.model.DAOs.BankAccountDAO;
 import org.example.utils.ORMConfig;
 
 import javax.servlet.*;
@@ -14,12 +12,14 @@ import java.io.IOException;
 public class ShowAllAccountsServlet extends HttpServlet {
 
     BankAccountDAO bankAccountDAO;
+
     @Override
     public void init() throws ServletException {
         super.init();
         ORMConfig.init();
         bankAccountDAO = new BankAccountDAO(ORMConfig.getEntityManager());
     }
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setAttribute("bankAccounts", bankAccountDAO.getAllAccounts());

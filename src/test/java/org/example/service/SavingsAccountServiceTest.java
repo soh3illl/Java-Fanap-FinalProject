@@ -1,4 +1,4 @@
-package org.example.controller;
+package org.example.service;
 
 import org.example.model.AccountHolder;
 import org.example.model.SavingsAccount;
@@ -9,8 +9,8 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.example.controller.SavingsAccountService.applyInterestWithExecutor;
-import static org.example.controller.SavingsAccountService.applyInterestWithoutExecutor;
+import static org.example.service.SavingsAccountService.applyInterestWithExecutor;
+import static org.example.service.SavingsAccountService.applyInterestWithoutExecutor;
 
 class SavingsAccountServiceTest {
     public static List<SavingsAccount> bankAccounts;
@@ -26,7 +26,7 @@ class SavingsAccountServiceTest {
     }
 
     @Test
-    void testApplyInterestWithExecutorAndWithoutExecutor() {
+    void testCompareApplyInterestWithExecutorAndWithoutExecutor() {
         long startTimeWithoutExecutor = System.currentTimeMillis();
         applyInterestWithoutExecutor(bankAccounts);
         long endTimeWithoutExecutor = System.currentTimeMillis();
