@@ -5,15 +5,7 @@
         language="java" %>
 <html>
     <head>
-        <meta charset="utf-8">
-        <meta name="viewport"
-              content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <meta name="description"
-              content="">
-        <meta name="author"
-              content="">
         <title>Sign in</title>
-
         <!-- Bootstrap core CSS -->
         <link rel="stylesheet"
               href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
@@ -82,7 +74,8 @@
         <form class="form-signin"
               method="post"
               action="${pageContext.request.contextPath}/">
-            <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+            <h1 class="h3 mb-3 font-weight-normal"
+                id="title">Please sign in</h1>
             <label for="inputUsername"
                    class="sr-only">Email address</label>
             <input type="text"
@@ -112,5 +105,17 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
                 integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
                 crossorigin="anonymous"></script>
+        <script>
+            const template = `
+           <div class="alert alert-danger" role="alert">
+                Error ! wrong username or password
+            </div>
+            `;
+
+            if (/'*error'/.test(window.local.href)) {
+                const form = document.querySelector(".form-signin");
+                form.insertAdjacentHTML("afterbegin", template);
+            }
+        </script>
     </body>
 </html>
