@@ -27,6 +27,7 @@
                            class="form-control"
                            id="accountNumberId"
                            name="accountNumber"
+                           required
                     >
                 </div>
                 <div class="mb-3">
@@ -36,6 +37,7 @@
                            class="form-control"
                            id="amountID"
                            name="amount"
+                           required
                     >
                 </div>
                 <div class="mb-3">
