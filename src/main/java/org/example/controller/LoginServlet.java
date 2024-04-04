@@ -34,6 +34,7 @@ public class LoginServlet extends HttpServlet {
             User user = users.get(0);
             HttpSession session = req.getSession();
             session.setAttribute("userType", user.getClass().getName());
+            session.setAttribute("userId", user.getId());
             if (user.getClass().getName().endsWith("AccountHolder")){
                 resp.sendRedirect("accounts/UserAccounts?id="+user.getId());
             }

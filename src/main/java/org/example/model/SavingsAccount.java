@@ -18,6 +18,11 @@ public class SavingsAccount extends BankAccount {
         this.type = Type.SAVING;
     }
 
+    public SavingsAccount(String accountNumber, AccountHolder accountHolder, double balance) {
+        super(accountNumber, accountHolder, balance);
+        this.type = Type.SAVING;
+    }
+
     @Override
     public Type getType() {
         return type;

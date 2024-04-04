@@ -22,6 +22,7 @@
             <form class="mt-4"
                   method="post"
                   action="${pageContext.request.contextPath}/accounts/create">
+
                 <div class="mb-3">
                     <label for="accountNumberId"
                            class="form-label">Account Number</label>
@@ -50,12 +51,12 @@
                             id="accountTypeId"
                             name="accountType">
                         <option value="checking">checking</option>
-                        <option value="saving">saving</option>
+                        <option value="savings">savings</option>
                     </select>
                 </div>
                 <input type="hidden"
                        name="userId"
-                       value="<%=request.getParameter("id")%>">
+                       value="<%=request.getAttribute("userId")%>">
                 <button type="submit"
                         class="btn btn-primary">Submit
                 </button>

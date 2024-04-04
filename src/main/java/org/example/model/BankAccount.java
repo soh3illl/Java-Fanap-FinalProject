@@ -136,10 +136,13 @@ public class BankAccount implements Serializable {
 
     @Override
     public String toString() {
-        return "BankAccount{" +
-                "accountNumber='" + accountNumber + '\'' +
-                ", accountHolder=" + accountHolder +
-                ", balance=" + balance +
-                '}';
+        final StringBuilder sb = new StringBuilder("BankAccount{");
+        sb.append("id=").append(id);
+        sb.append(", accountNumber='").append(accountNumber).append('\'');
+        sb.append(", accountHolder=").append(accountHolder);
+        sb.append(", balance=").append(balance);
+        sb.append(", type=").append(type);
+        sb.append('}');
+        return sb.toString();
     }
 }

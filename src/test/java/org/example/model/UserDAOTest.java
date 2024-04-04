@@ -23,17 +23,24 @@ class UserDAOTest {
     }
 
     @Test
-    void givenNewUser_whenCreatingUser_thenUserCreateSuccessfully() {
-        BankEmployee bankEmployee = new BankEmployee("r.f","1234","reza","farzin",1271111111L,1);
+    void givenNewBankEmployee_whenCreatingBankEmployee_thenBankEmployeeCreateSuccessfully() {
+        BankEmployee bankEmployee = new BankEmployee("ali.a","1234","ali","abedi",1271111111L,1);
         Assertions.assertDoesNotThrow(() -> {
             userDAO.createUserAccount(bankEmployee);
+        });
+    }
+    @Test
+    void givenNewAccountHolder_whenCreatingAccountHolder_thenAccountHolderCreateSuccessfully() {
+        AccountHolder accountHolder = new AccountHolder("mahsa.sh","1234","mahsa","shams",1272211111L);
+        Assertions.assertDoesNotThrow(() -> {
+            userDAO.createUserAccount(accountHolder);
         });
     }
 
     @Test
     void givenUserId_whenFindingUserById_thenUserFound() {
         User user = userDAO.findUserById(2);
-        Assertions.assertEquals(user.getId() , 2);
+        Assertions.assertEquals(user.getNationalCode() , 1271111111);
     }
 
     @Test
@@ -52,10 +59,10 @@ class UserDAOTest {
     @Test
     void givenUserUpdates_whenUpdatingUser_thenUserUpdateSuccessfully() {
         Map<String, Object> updates = new HashMap<>();
-        updates.put("username", "reza.f");
-        updates.put("firstName", "aliReza");
+        updates.put("username", "ali.ab");
+        updates.put("firstName", "alii");
         Assertions.assertDoesNotThrow(() -> {
-            userDAO.updateUser(updates, 4);
+            userDAO.updateUser(updates, 2);
         });
     }
 
@@ -73,7 +80,7 @@ class UserDAOTest {
 
     @Test
     void givenUsernameAndPassword_whenGettingUser_thenUserFound() {
-        List<User> user = userDAO.getUserByUsernameAndPassword("reza.f", "1234");
+        List<User> user = userDAO.getUserByUsernameAndPassword("mahla.sh", "1234");
         Assertions.assertEquals(1,user.size());
     }
 }

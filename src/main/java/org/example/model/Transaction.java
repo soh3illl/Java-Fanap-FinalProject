@@ -13,10 +13,10 @@ public class Transaction {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "from_account_id")
     private BankAccount fromAccount;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "to_account_id")
     private BankAccount toAccount;
     private Double transferAmount;
@@ -79,7 +79,8 @@ public class Transaction {
     public void setTransferAmount(Double transferAmount) {
         this.transferAmount = transferAmount;
     }
-    public void transfer(BankAccount toAccount , BankAccount fromAccount , Double amount){
+
+    public void transfer(BankAccount toAccount, BankAccount fromAccount, Double amount) {
         try {
             fromAccount.withdraw(amount);
         } catch (InvalidTransactionException e) {
@@ -91,12 +92,13 @@ public class Transaction {
 
     @Override
     public String toString() {
-        return "Transaction{" +
-                "id=" + id +
-                ", fromAccount=" + fromAccount +
-                ", toAccount=" + toAccount +
-                ", transferAmount=" + transferAmount +
-                ", date=" + date +
-                '}';
+        final StringBuilder sb = new StringBuilder("Transaction{");
+        sb.append("id=").append(id);
+        sb.append(", fromAccount=").append(fromAccount);
+        sb.append(", toAccount=").append(toAccount);
+        sb.append(", transferAmount=").append(transferAmount);
+        sb.append(", date=").append(date);
+        sb.append('}');
+        return sb.toString();
     }
 }

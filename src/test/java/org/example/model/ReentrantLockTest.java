@@ -10,7 +10,7 @@ class ReentrantLockTest {
 
     @BeforeAll
     static void setUp() {
-        accountHolder = new AccountHolder("m.sh","123","mahla","shams",123456L);
+        accountHolder = new AccountHolder("mahla.sh","1234","mahla","shams",1272111111L);
         savingsAccount1 = new SavingsAccount("12341", accountHolder);
         savingsAccount1.setBalance(500000.0);
     }

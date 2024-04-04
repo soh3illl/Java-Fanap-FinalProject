@@ -18,7 +18,8 @@ public class AccessFilter implements Filter {
         HttpSession session = req.getSession();
         String userType = (String) session.getAttribute("userType");
         if (!userType.endsWith("BankEmployee")) {
-            resp.sendRedirect("/home?error=true");
+            session.setAttribute("error", "You do not have permission to access this resource.");
+            resp.sendRedirect("UserAccounts?id="+session.getAttribute("userId"));
             return;
         }
         chain.doFilter(request, response);

@@ -25,7 +25,7 @@ class BankAccountDAOTest {
 
     @Test
     void givenAccountDetails_whenCreatingAccount_thenAccountCreateSuccessfully() {
-        AccountHolder accountHolder = new AccountHolder("m.sh", "123", "mahla", "shams", 123456L);
+        AccountHolder accountHolder = new AccountHolder("mahla.sh", "1234", "mahla", "shams", 1272111111L);
         CheckingAccount checkingAccount = new CheckingAccount("210", accountHolder, 51_000.0);
         checkingAccount.setBalance(800_000.0);
         Assertions.assertDoesNotThrow(() -> {
@@ -42,7 +42,7 @@ class BankAccountDAOTest {
     @Test
     void givenAccountId_whenDeletingAccount_thenAccountDeleteSuccessfully() {
         Assertions.assertDoesNotThrow(() -> {
-            bankAccountDAO.deleteAccountById(8);
+            bankAccountDAO.deleteAccountById(4);
         });
     }
 

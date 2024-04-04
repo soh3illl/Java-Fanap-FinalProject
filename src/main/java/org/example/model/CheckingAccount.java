@@ -9,7 +9,7 @@ import javax.persistence.Transient;
 
 @Entity
 public class CheckingAccount extends BankAccount {
-    private Double overdraftLimit;
+    private Double overdraftLimit = 1000.0;
     @Transient
     protected Type type = Type.CHECKING;
 
@@ -20,6 +20,11 @@ public class CheckingAccount extends BankAccount {
 
     public CheckingAccount(String accountNumber, AccountHolder accountHolder, Double overdraftLimit) {
         super(accountNumber, accountHolder);
+        this.overdraftLimit = overdraftLimit;
+    }
+
+    public CheckingAccount(String accountNumber, AccountHolder accountHolder, double balance) {
+        super(accountNumber, accountHolder, balance);
         this.overdraftLimit = overdraftLimit;
     }
 
@@ -52,9 +57,8 @@ public class CheckingAccount extends BankAccount {
         if (this.getBalance() + this.getOverdraftLimit() < withdrawalAmount) {
             throw new InsufficientFundsException("This amount could not be withdrawn because it is more than overdraftLimit");
         }
-
-        this.setBalance(this.getBalance() - amount);
         deductFees(amount);
+        this.setBalance(this.getBalance() - amount);
     }
     @DeprecatedMethod(reason = "not calculating fees and not being synchronized",replacement = "withdraw")
     public void withdrawWithoutFees(double amount) {

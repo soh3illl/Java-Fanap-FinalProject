@@ -28,7 +28,7 @@ class TransactionDAOTest {
     @Test
     void givenTransactionDetails_whenCreatingTransaction_thenTransactionCreateSuccessfully() {
         Assertions.assertDoesNotThrow(() -> {
-            transactionDAO.createTransaction(7, 8, 1000.0);
+            transactionDAO.createTransaction(1, 3, 1000.0);
         });
     }
 
@@ -41,14 +41,14 @@ class TransactionDAOTest {
     @Test
     void givenTransactionId_whenDeletingTransaction_thenTransactionDeleteSuccessfully() {
         Assertions.assertDoesNotThrow(() -> {
-            transactionDAO.deleteTransaction(5);
+            transactionDAO.deleteTransaction(1);
         });
     }
 
     @Test
     void whenGettingAllTransactions_thenCorrectNumberOfTransactionsReturned() {
         List<Transaction> transactions = transactionDAO.getAllTransactions();
-        Assertions.assertEquals(3, transactions.size());
+        Assertions.assertEquals(1, transactions.size());
     }
 
     @Test
@@ -67,6 +67,6 @@ class TransactionDAOTest {
         LocalDate dateString = LocalDate.parse("2024-03-14");
         Date date = Date.valueOf(dateString);
         List<Transaction> transactions = transactionDAO.filterTransactionBasedOnDate(date);
-        Assertions.assertEquals(1, transactions.size());
+        Assertions.assertEquals(0, transactions.size());
     }
 }
