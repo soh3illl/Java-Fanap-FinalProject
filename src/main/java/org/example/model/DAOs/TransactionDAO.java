@@ -77,22 +77,29 @@ public class TransactionDAO {
 
     public void updateTransaction(Map<String, Object> updates, Integer id) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         EntityTransaction transaction = this.getEntityManager().getTransaction();
-        transaction.begin();
-        Transaction updatedTransaction = this.getEntityManager().find(Transaction.class, id);
+        try {
+            transaction.begin();
+            Transaction updatedTransaction = this.getEntityManager().find(Transaction.class, id);
 
-        for (Map.Entry<String, Object> entry : updates.entrySet()) {
-            String attributeName = entry.getKey();
-            Object attributeValue = entry.getValue();
-            String setterMethodName = "set" + attributeName.substring(0, 1).toUpperCase() + attributeName.substring(1);
-            if (attributeValue.getClass().getSuperclass().equals(BankAccount.class)) {
-                updatedTransaction.getClass().getMethod(setterMethodName, attributeValue.getClass().getSuperclass()).invoke(updatedTransaction, attributeValue);
+            for (Map.Entry<String, Object> entry : updates.entrySet()) {
+                String attributeName = entry.getKey();
+                Object attributeValue = entry.getValue();
+                String setterMethodName = "set" + attributeName.substring(0, 1).toUpperCase() + attributeName.substring(1);
+                if (attributeValue.getClass().getSuperclass().equals(BankAccount.class)) {
+                    updatedTransaction.getClass().getMethod(setterMethodName, attributeValue.getClass().getSuperclass()).invoke(updatedTransaction, attributeValue);
 
-            } else {
-                updatedTransaction.getClass().getMethod(setterMethodName, attributeValue.getClass()).invoke(updatedTransaction, attributeValue);
+                } else {
+                    updatedTransaction.getClass().getMethod(setterMethodName, attributeValue.getClass()).invoke(updatedTransaction, attributeValue);
 
+                }
             }
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            throw e;
         }
-        transaction.commit();
 
     }
 

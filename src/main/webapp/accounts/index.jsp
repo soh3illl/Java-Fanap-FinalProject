@@ -26,7 +26,7 @@
     <div class="alert alert-danger" role="alert">
         <%= session.getAttribute("error") %>
     </div>
-    <% session.removeAttribute("error"); // Remove the attribute after displaying it %>
+    <% session.removeAttribute("error");%>
     <% } %>
     <table class="table mt-4">
         <thead>

@@ -24,10 +24,18 @@ public class UserDAO {
 
     public void createUserAccount(User user) {
         EntityTransaction transaction = entityManager.getTransaction();
-        transaction.begin();
-        entityManager.persist(user);
-        transaction.commit();
+        try {
+            transaction.begin();
+            entityManager.persist(user);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            throw e;
+        }
     }
+
     public User findUserById(int userId) {
         entityManager.clear();
         return entityManager.find(User.class, userId);
@@ -49,18 +57,25 @@ public class UserDAO {
 
     public void updateUser(Map<String, Object> updates, Integer id) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         EntityTransaction transaction = this.getEntityManager().getTransaction();
-        transaction.begin();
-        User updatedUser = this.getEntityManager().find(User.class, id);
+        try {
+            transaction.begin();
+            User updatedUser = this.getEntityManager().find(User.class, id);
 
-        for (Map.Entry<String, Object> entry : updates.entrySet()) {
-            String attributeName = entry.getKey();
-            Object attributeValue = entry.getValue();
-            String setterMethodName = "set" + attributeName.substring(0, 1).toUpperCase() + attributeName.substring(1);
-            updatedUser.getClass().getMethod(setterMethodName, attributeValue.getClass()).invoke(updatedUser, attributeValue);
+            for (Map.Entry<String, Object> entry : updates.entrySet()) {
+                String attributeName = entry.getKey();
+                Object attributeValue = entry.getValue();
+                String setterMethodName = "set" + attributeName.substring(0, 1).toUpperCase() + attributeName.substring(1);
+                updatedUser.getClass().getMethod(setterMethodName, attributeValue.getClass()).invoke(updatedUser, attributeValue);
 
+            }
+
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            throw e;
         }
-
-        transaction.commit();
     }
 
     public List<AccountHolder> getAllAccountHolders() {
@@ -71,9 +86,9 @@ public class UserDAO {
         return entityManager.createQuery("SELECT b FROM BankEmployee b", BankEmployee.class).getResultList();
     }
 
-    public List<User> getUserByUsernameAndPassword(String username , String password){
+    public List<User> getUserByUsernameAndPassword(String username, String password) {
         return entityManager.createQuery("SELECT u FROM User u where u.username = :username " +
-                "and u.password = :password", User.class).setParameter("username", username)
+                        "and u.password = :password", User.class).setParameter("username", username)
                 .setParameter("password", password)
                 .getResultList();
     }

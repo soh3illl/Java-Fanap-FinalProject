@@ -25,9 +25,16 @@ public class BankAccountDAO {
 
     public void createAccount(BankAccount bankAccount) {
         EntityTransaction transaction = entityManager.getTransaction();
-        transaction.begin();
-        entityManager.persist(bankAccount);
-        transaction.commit();
+        try {
+            transaction.begin();
+            entityManager.persist(bankAccount);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            throw e;
+        }
     }
 
     public BankAccount findAccountById(int accountId) {
@@ -52,21 +59,28 @@ public class BankAccountDAO {
 
     public void updateAccount(Map<String, Object> updates, Integer id) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         EntityTransaction transaction = this.getEntityManager().getTransaction();
-        transaction.begin();
-        BankAccount updatedAccount = this.getEntityManager().find(BankAccount.class, id);
+        try {
+            transaction.begin();
+            BankAccount updatedAccount = this.getEntityManager().find(BankAccount.class, id);
 
-        for (Map.Entry<String, Object> entry : updates.entrySet()) {
-            String attributeName = entry.getKey();
-            Object attributeValue = entry.getValue();
-            if (attributeName.equals("balance")){
-                attributeValue = Double.parseDouble((String) attributeValue);
+            for (Map.Entry<String, Object> entry : updates.entrySet()) {
+                String attributeName = entry.getKey();
+                Object attributeValue = entry.getValue();
+                if (attributeName.equals("balance")) {
+                    attributeValue = Double.parseDouble((String) attributeValue);
+                }
+                String setterMethodName = "set" + attributeName.substring(0, 1).toUpperCase() + attributeName.substring(1);
+                updatedAccount.getClass().getMethod(setterMethodName, attributeValue.getClass()).invoke(updatedAccount, attributeValue);
+
             }
-            String setterMethodName = "set" + attributeName.substring(0, 1).toUpperCase() + attributeName.substring(1);
-            updatedAccount.getClass().getMethod(setterMethodName, attributeValue.getClass()).invoke(updatedAccount, attributeValue);
 
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            throw e;
         }
-
-        transaction.commit();
     }
 
     public List<BankAccount> filterBalanceByAmount(double balance) {
